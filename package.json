@@ -1,0 +1,35 @@
+{
+  "name": "mitman",
+  "version": "1.0.0",
+  "description": "Mitman is your developer meetup manager",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/developercirclesaccra/mitman.git"
+  },
+  "keywords": [
+    "mitman",
+    "bot",
+    "developers",
+    "meetup",
+    "manager"
+  ],
+  "author": "John Otu <johnne01@gmail.com> (https://github.com/johnotu)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/developercirclesaccra/mitman/issues"
+  },
+  "homepage": "https://github.com/developercirclesaccra/mitman#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "dotenv": "^4.0.0"
+  }
+}

@@ -45,5 +45,18 @@ def get_one_user(number):
 		
 @app.route('/users', methods=['POST'])
 def add_users():
-	users = request.form 
-	return "regiatered"
+	first_name = request.form.get('fname')
+	last_name = request.form.get('lname')
+	email = request.form.get('email')
+	phone_number = request.form.get('phone')
+	event = request.form.get('event')
+
+	query = Users.insert(first_name=first_name,last_name=last_name,email=email,phone_number=phone_number,event=event)
+	query.execute()
+	return "Query recorded"
+
+# cURL
+# Postman
+
+
+# curl -X POST http://localhost:5000/users -d 'fname=Francis&lname=Addai&email=franci.@mest.com&phone=9320239023Y&event=Hello'

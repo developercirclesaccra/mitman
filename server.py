@@ -33,3 +33,17 @@ def get_users():
 		return "Nothing to return"
 	
 	return jsonify({'users':query.get()._data})
+
+@app.route('/users/<int:number>', methods=['GET'])
+def get_one_user(number):
+	query = Users.select().where(Users.id == number)
+	
+	if query.count()<1:
+		return "Nothing to return"
+	
+	return jsonify({'users':query.get()._data})
+		
+@app.route('/users', methods=['POST'])
+def add_users():
+	users = request.form 
+	return "regiatered"

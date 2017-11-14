@@ -91,3 +91,10 @@ def get_events():
 	
 	return jsonify({'events':query.get()._data})
 
+# get one specific event
+@app.route('/Events<int:number>', methods=['GET'])
+def get_one_event(number):
+	query = Events.select().where(id == number)
+	if query.count()<1:
+		return "Cant find a thing"
+	return jsonify({'event':query.get()._data})

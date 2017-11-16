@@ -1,6 +1,42 @@
 'use strict'
 
 const sendApi = require('./send-api');
+const getUserProfile = require('../utils/get-user-profile');
+
+const handlePostback = event => {
+  const payload = event.postback.payload;
+  const senderId = event.sender.id;
+
+  switch (payload) {
+    case 'get_started':
+      getUserProfile(senderId, (error, response, body) => {
+        if (error) {
+          throw error;
+        };
+        let user = JSON.parse(body);
+        let welcomeMsg = "Hello " + user.first_name + "! My name is Mitman. I make your developer meetup experience awesome B-).";
+        sendApi.sendMessage(senderId, { text: welcomeMsg }, () => {
+          let quickreply = [
+            {
+              "content_type": "text",
+              "title": "Attend a Meetup",
+              "payload": "attend_meetup",
+            },
+            {
+              "content_type": "text",
+              "title": "Organize a Meetup",
+              "payload": "organize_meetup",
+            }
+          ];
+          let quickReplyMessage = {
+            "text": "Are you attending or organizing a developer meetup?",
+            "quick_replies": quickreply,
+          };
+          sendApi.sendMessage(senderId, quickReplyMessage);
+        });
+      });
+  }
+};
 
 const handleMessage = (event) => {
   const message = event.message;
@@ -37,5 +73,5 @@ const handleMessage = (event) => {
 };
 
 module.exports = {
-  handleMessage,
+  handleMessage, handlePostback,
 };

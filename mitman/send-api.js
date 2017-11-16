@@ -2,22 +2,21 @@
 
 const request = require('request');
 
-const sendMessage = (recipientId, messagePayload) => {
+const sendMessage = (recipientId, messagePayload, callback) => {
   let messageJSON = {
     recipient: {
       id: recipientId,
     },
     message: messagePayload,
   };
-  callMessagesApi(messageJSON);
-}
-
-
-const callMessagesApi = (messageJSON, queryParams = {}) => {
-  return callApi('messages', messageJSON, queryParams);
+  callMessagesApi(messageJSON, {}, callback);
 };
 
-const callApi = (endPoint, messageJSON, queryParams = {}) => {
+const callMessagesApi = (messageJSON, queryParams = {}, callback) => {
+  return callApi('messages', messageJSON, queryParams, callback);
+};
+
+const callApi = (endPoint, messageJSON, queryParams = {}, callback) => {
   
   // Make sure the page access token is added as a query param
   const query = Object.assign(
@@ -35,6 +34,9 @@ const callApi = (endPoint, messageJSON, queryParams = {}) => {
         `Successfully sent message to ${endPoint} endpoint: `,
         JSON.stringify(body)
       );
+      if (callback) {
+        callback();
+      };
     } else {
       // Something went wrong
       console.error(

@@ -42,6 +42,8 @@ router.post('/', (req, res) => {
       // We process each type of messaging event
       if (messagingEvent.message) {
       	receiveApi.handleMessage(messagingEvent);
+      } else if (messagingEvent.postback) {
+        receiveApi.handlePostback(messagingEvent);
       }
     });
   });

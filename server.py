@@ -60,6 +60,12 @@ def add_users():
 	query.execute()
 	return "Query recorded"
 
+# delete user
+@app.route('/users/<int:number>', methods=['DELETE'])
+def get_one_user(number):
+	query = Users.delete().where(Users.id == number)
+	query.execute()
+
 # add an event
 @app.route('/Events', methods=['POST'])
 def add_events():

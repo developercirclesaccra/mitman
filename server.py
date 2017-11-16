@@ -62,7 +62,7 @@ def add_users():
 
 # delete user
 @app.route('/users/<int:number>', methods=['DELETE'])
-def get_one_user(number):
+def delete_user(number):
 	query = Users.delete().where(Users.id == number)
 	query.execute()
 
@@ -104,3 +104,9 @@ def get_one_event(number):
 	if query.count()<1:
 		return "Cant find a thing"
 	return jsonify({'event':query.get()._data})
+
+# delete event
+@app.route('/events/<int:number>', methods=['DELETE'])
+def delete_event(number):
+	query = Events.delete().where(Events.id == number)
+	query.execute()

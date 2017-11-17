@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 // Import app routes/modules
 const webhook = require('./routes/webhook');
+const createEvent = require('./routes/create-event');
 
 const app = express();
 
@@ -14,8 +15,9 @@ if (app.get('env') == 'development') {
   require('dotenv').config();
 }
 
-// Set app port 
-app.set('port', (process.env.PORT || 3001));
+// Set app port
+app.set('view engine', 'ejs');
+app.set('port', (process.env.PORT || 3600));
 
 
 // Import middleware for parsing requests
@@ -24,6 +26,7 @@ app.use(bodyParser.json());
 
 // Attach routes to the app
 app.use('/webhook', webhook);
+app.use('/create-event', createEvent);
 
 app.listen(app.get('port'), () => {
   console.log('Hello Human!')

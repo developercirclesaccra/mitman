@@ -42,34 +42,66 @@ const handleMessage = (event) => {
   const message = event.message;
   const senderId = event.sender.id;
 
-  if (!message.text) {
-  	return;
-  }
-  
-  let text = message.text;
-
-  //Customized responses
-  switch (text) {
-    case 'Good morning':
-      let response = 'Good morning to you too dear';
-      sendApi.sendMessage(senderId, { text: response });
-
-    // If the options don't match, just echo back the message to the user
-    default:
-      sendApi.sendMessage(senderId, { text: text });
-  }
-  // // Use NLP to change the message in case it's a greeting
-  // if (message.nlp && message.nlp.entities.greetings) {
-  //   let greetings = message.nlp.entities.greetings;
-  //   let isGreeting = greetings.filter((greeting) => {
-  //     return greeting.confidence > 0.95;  
-  //   }).length > 0;
-  //   if (isGreeting) {
-  //     text = 'Welcome to Mitman!';
-  //   }
+  // if (!message.text) {
+  // 	return;
   // }
-  // sendApi.sendMessage(senderId, {text: text});
 
+  if (message.quick_reply) {
+    console.log('QR recived');
+    let quickReply = message.quick_reply;
+    let payload = quickReply.payload;
+
+    switch (payload) {
+      case 'organize_meetup':
+        let msgJSON = {
+          "text": "I have a simple form for you to fill in some details about your upcoming Meetup",
+        };
+        sendApi.sendMessage(senderId, msgJSON, () => {
+          let formButton = {
+            attachment: {
+              type: "template",
+              payload: {
+                template_type: "button",
+                text: "Fill in event details",
+                buttons: [{
+                  type: "web_url",
+                  url: process.env.SERVER_URL + "create-event",
+                  title: "Event Details",
+                  webview_height_ratio: "full",
+                  messenger_extensions: true
+                }]
+              }
+            }
+          };
+          sendApi.sendMessage(senderId, formButton);
+        })
+    }
+  } else if (message.text) {
+  
+    let msgText = message.text;
+
+    //Customized responses
+    switch (msgText) {
+      case 'Good morning':
+        let response = 'Good morning to you too dear';
+        sendApi.sendMessage(senderId, { text: response });
+
+      // If the options don't match, just echo back the message to the user
+      default:
+        sendApi.sendMessage(senderId, { text: msgText });
+    }
+    // // Use NLP to change the message in case it's a greeting
+    // if (message.nlp && message.nlp.entities.greetings) {
+    //   let greetings = message.nlp.entities.greetings;
+    //   let isGreeting = greetings.filter((greeting) => {
+    //     return greeting.confidence > 0.95;  
+    //   }).length > 0;
+    //   if (isGreeting) {
+    //     text = 'Welcome to Mitman!';
+    //   }
+    // }
+    // sendApi.sendMessage(senderId, {text: text});
+  }
 };
 
 module.exports = {

@@ -58,6 +58,30 @@ const handlePostback = event => {
           }
         })
       });
+      break;
+    case 'organize_meetup':
+      let msgJSON = {
+        "text": "I have a simple form for you to fill in some details about your upcoming Meetup",
+      };
+      sendApi.sendMessage(senderId, msgJSON, () => {
+        let formButton = {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "button",
+              text: "Fill in event details",
+              buttons: [{
+                type: "web_url",
+                url: process.env.SERVER_URL + "create-event",
+                title: "Event Details",
+                webview_height_ratio: "full",
+                messenger_extensions: true
+              }]
+            }
+          }
+        };
+        sendApi.sendMessage(senderId, formButton);
+      });  
   }
 };
 
@@ -73,7 +97,7 @@ const handleMessage = (event) => {
     console.log('QR recived');
     let quickReply = message.quick_reply;
     let payload = quickReply.payload;
-
+    
     switch (payload) {
       case 'organize_meetup':
         let msgJSON = {

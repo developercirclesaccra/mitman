@@ -19,22 +19,23 @@
   </head>
 
   <body>
+    
     <div class="container">
       <h3 class="page-header">Please fill in event details here </h3>
-      <form action="">
+      
         <div class="form-group">
           <label for="event-name">Name</label>
           <input type="text" class="form-control" id="event-name" placeholder="Enter the name/title of your event here">
         </div>
         <div class="form-group">
-          <label for="event-type">Format</label>
-          <select class="form-control" id="event-type">
+          <label for="event-format">Format</label>
+          <select class="form-control" id="event-format">
             <option value="">Choose event format</option>
-            <option value="tech_talk">Tech Talk</option>
-            <option value="workshop">Workshop</option>
-            <option value="hackathon">Hackathon</option>
-            <option value="viewing_party">Viewing Party</option>
-            <option value="hybrid">Hybrid</option>
+            <option value="Tech Talk">Tech Talk</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Hackathon">Hackathon</option>
+            <option value="Viewing Party">Viewing Party</option>
+            <option value="Hybrid">Hybrid</option>
           </select>
         </div>
         <div class="form-group">
@@ -50,29 +51,38 @@
           <input type="time" class="form-control" id="event-end-time">
         </div>
         <div class="form-group">
+          <label for="event-feedback-time">Feedback time</label>
+          <input type="time" class="form-control" id="event-feedback-time">
+          <small class="form-text text-muted">This is when you want to ask participants for feedback</small>
+        </div>
+        <div class="form-group">
+          <label for="event-venue">Venue</label>
+          <input type="text" class="form-control" id="event-venue" placeholder="Enter the venue/location of your event here">
+        </div>
+        <div class="form-group">
           <label for="event-description">Description</label>
-          <textarea class="form-control" name="event-description" placeholder="Enter a brief description of the event here" rows="3"></textarea>
+          <textarea class="form-control" id="event-description" placeholder="Enter a brief description of the event here" rows="3"></textarea>
         </div>
         <div class="form-group">
           <label for="event-agenda">Agenda</label>
-          <textarea class="form-control" name="event-agenda" placeholder="Enter the agenda including time, topic and speaker (if applicable)"
+          <textarea class="form-control" id="event-agenda" placeholder="Enter the agenda including time, topic and speaker (if applicable)"
             rows="3"></textarea>
         </div>
         <fieldset class="form-group">
           <label>Will there be SWAG?</label>
           <div class="form-check">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="swag-radios" id="swag-yes" value="swag-yes"> Yes
+              <input type="radio" class="form-check-input" name="swag-radios" id="swag-yes" value="true"> Yes
             </label>
           </div>
           <div class="form-check">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="swag-radios" id="swag-no" value="swag-no"> No
+              <input type="radio" class="form-check-input" name="swag-radios" id="swag-no" value="false"> No
             </label>
           </div>
         </fieldset>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+        <button type="submit" class="btn btn-primary" onclick="submitEvent()">Submit</button>
+     
     </div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
@@ -82,6 +92,74 @@
       crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
       crossorigin="anonymous"></script>
+    <script>
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'Messenger'));
+
+      window.extAsyncInit = function () { }
+
+
+      function submitEvent() {
+        console.log('Submit button clicked');
+        let eventJSON = {
+          name: document.getElementById('event-name').value,
+          description: document.getElementById('event-description').value,
+          format: document.getElementById('event-format').value,
+          venue: document.getElementById('event-venue').value,
+          date: document.getElementById('event-date').value,
+          start_time: document.getElementById('event-start-time').value,
+          end_time: document.getElementById('event-end-time').value,
+          is_swag: document.getElementsByName('swag-radios : checked').value,
+          feedback_time: document.getElementById('event-feedback-time').value,
+          agenda: document.getElementById('event-agenda').value,
+        };
+
+        console.log('*eventJSON: ', eventJSON);
+
+        MessengerExtensions.getContext('1892957380733858', thread_context => {
+          let fbId = thread_context.psid;
+          console.log('*psid: ', fbId);
+          eventJSON.fbId = fbId;
+
+          let eventReq = new Request('/submit-event', {
+            method: 'POST',
+            headers: new Headers({
+              "Content-Type": "application/json"
+            }),
+            body: JSON.stringify({ "eventJSON": eventJSON })
+          });
+
+          fetch(eventReq)
+            .then(
+            response => {
+              if (response.status !== 200) {
+                console.log('*Looks like there was a problem. Status Code: ', response.status);
+                return;
+              }
+              response.json().then(data => {
+                MessengerExtensions.requestCloseBrowser( success =>{
+                  console.log('*Sucess closing browser: ', success);
+                }, error => {
+                  console.log('*Error closing browser: ', error)
+                });
+              })
+            }
+            )
+            .catch(error => {
+              console.log('*Fetch error: ', error);
+            });
+        }, error => {
+          console.log('*Messenger Extension error: ', error);
+        })
+
+      }
+
+    </script>
   </body>
 
 </html>

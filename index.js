@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 // Import app routes/modules
 const webhook = require('./routes/webhook');
 const createEvent = require('./routes/create-event');
+const submitEvent = require('./routes/submit-event');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 // Attach routes to the app
 app.use('/webhook', webhook);
 app.use('/create-event', createEvent);
+app.use('/submit-event', submitEvent);
 
 app.listen(app.get('port'), () => {
   console.log('Hello Human!')

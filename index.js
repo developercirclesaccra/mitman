@@ -30,6 +30,10 @@ app.use('/webhook', webhook);
 app.use('/create-event', createEvent);
 app.use('/submit-event', submitEvent);
 
+app.get('/', (req, res) => {
+  res.send(200, 'Welcome to Mitman Bot service. Contact our bot at https://www.facebook.com/Mitman-Bot-128096021205913/');
+});
+
 app.listen(app.get('port'), () => {
   console.log('Hello Human!')
   console.log('Mitman is running on port', app.get('port'));

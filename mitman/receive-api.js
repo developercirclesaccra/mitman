@@ -3,6 +3,7 @@
 const sendApi = require('./send-api');
 const getUserProfile = require('../utils/get-user-profile');
 const requestCall = require('../utils/request-call');
+const dialogs = require('../utils/dialogs');
 
 const handlePostback = event => {
   const payload = event.postback.payload;
@@ -85,53 +86,7 @@ const handlePostback = event => {
       break;
 
     case 'attend_meetup':
-      let msg1 = "To attend a meetup, you need to scan the Messenger code for the meetup",
-        msg2 = "To scan the code, tap the contacts icon - like the one shown in the image below ",
-        msg3 = "Then tap 'Scan Messenger Code'",
-        msg4 = "Then hold camera viewer over the code and it will open a conversation about your meetup";
-     
-      sendApi.sendMessage(senderId, {
-        text: msg1,
-      }, () => {
-        sendApi.sendMessage(senderId, {
-          text: msg2,
-        }, () => {
-          sendApi.sendMessage(senderId, {
-            "attachment": {
-              "type": "image",
-              "payload": {
-                "url": "https://s20.postimg.org/f6g6pxubx/messenger_scan_code_1.png",
-              }
-            }
-          }, () => {
-            sendApi.sendMessage(senderId, {
-              text: msg3
-            }, () => {
-              sendApi.sendMessage(senderId, {
-                "attachment": {
-                  "type": "image",
-                  "payload": {
-                    "url": "https://s20.postimg.org/vhgama9el/messenger_scan_code_2.png",
-                  }
-                }
-              }, () => {
-                sendApi.sendMessage(senderId, {
-                  text: msg4
-                }, () => {
-                  sendApi.sendMessage(senderId, {
-                    "attachment": {
-                      "type": "image",
-                      "payload": {
-                        "url": "https://s20.postimg.org/spa1z62bh/mitman_code_scan.png",
-                      }
-                    }
-                  })
-                })
-              })
-            })
-          })
-        })
-      })
+      dialogs.attendMeetup(senderId);
       
       
   }
@@ -173,7 +128,12 @@ const handleMessage = (event) => {
             }
           };
           sendApi.sendMessage(senderId, formButton);
-        })
+        });
+        break;
+
+      case 'attend_meetup':
+        dialogs.attendMeetup(senderId);
+        break;
     }
   } else if (message.text) {
   
@@ -187,7 +147,8 @@ const handleMessage = (event) => {
 
       // If the options don't match, just echo back the message to the user
       default:
-        sendApi.sendMessage(senderId, { text: msgText });
+        dialogs.welcome(senderId);
+
     }
     // // Use NLP to change the message in case it's a greeting
     // if (message.nlp && message.nlp.entities.greetings) {

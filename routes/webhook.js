@@ -44,6 +44,9 @@ router.post('/', (req, res) => {
       	receiveApi.handleMessage(messagingEvent);
       } else if (messagingEvent.postback) {
         receiveApi.handlePostback(messagingEvent);
+      } else if (messagingEvent.referral) {
+        console.log('Referral webhook triggered...', messagingEvent);
+        receiveApi.handleReferral(messagingEvent);
       }
     });
   });

@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
         if (err) { throw err };
         if (body.success) {
           let eventId = body.event._id;
-          console.log('*created event Id: ', eventId);
+          console.log('*created event: ', body);
           let codeArgs = {
             url_String: "https://graph.facebook.com/v2.6/me/messenger_codes",
             method_String: 'POST',

@@ -87,10 +87,29 @@ const handlePostback = event => {
 
     case 'attend_meetup':
       dialogs.attendMeetup(senderId);
-      
-      
   }
 };
+
+const handleReferral = event => {
+  const ref = event.referral.ref;
+  const senderId = event.sender.id;
+  const organizerId = ref.split("_")[1];
+  const eventId = ref.split('_')[3];
+
+  let getEventArgs = {
+    url_String: process.env.BACKEND_URL + "event/" + eventId,
+    method_String: 'GET',
+    headers_Object: {
+      "mitman-token": process.env.MITMAN_TOKEN,
+    },
+  };
+  requestCall(getEventArgs, (err, resp, body) => {
+    if (err) {
+      throw err;
+    };
+    return console.log('*Get event result: ', body);
+  })
+}
 
 const handleMessage = (event) => {
   const message = event.message;
@@ -165,5 +184,5 @@ const handleMessage = (event) => {
 };
 
 module.exports = {
-  handleMessage, handlePostback,
+  handleMessage, handlePostback, handleReferral
 };

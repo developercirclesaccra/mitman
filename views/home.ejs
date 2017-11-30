@@ -48,6 +48,24 @@
   </head>
 
   <body>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '1892957380733858',
+          xfbml: true,
+          version: 'v2.11'
+        });
+        FB.AppEvents.logPageView();
+      };
+
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     </nav>
@@ -57,6 +75,8 @@
         <div class="container">
           <h1 class="display-1 text-white">Mitman</h1>
           <h2 class="display-4 text-white">Your meetup manager!</h2>
+        </div>
+        <div class="fb-like float-right" data-share="false" data-width="100" data-show-faces="false">
         </div>
       </div>
     </header>

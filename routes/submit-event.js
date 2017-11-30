@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
       console.log('about to add organizer tojson...');
       eventJSON.organizer = userData.user._id;
       let addEventArgs = {
-        url_String: process.env.BACKEND_URL + 'event',
+        url_String: process.env.BACKEND_URL + 'meetup',
         method_String: 'POST',
         headers_Object: {
           "content-type": "application/json",

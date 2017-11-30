@@ -34,6 +34,10 @@ app.get('/', (req, res) => {
   res.render('home');
   //res.send(200, 'Welcome to Mitman Bot service. Contact our bot at https://www.facebook.com/Mitman-Bot-128096021205913/');
 });
+app.get('/privacy', (req, res) => {
+  res.render('privacy');
+  //res.send(200, 'Welcome to Mitman Bot service. Contact our bot at https://www.facebook.com/Mitman-Bot-128096021205913/');
+});
 
 app.listen(app.get('port'), () => {
   console.log('Hello Human!')

@@ -36,7 +36,9 @@ app.get('/', (req, res) => {
 });
 app.get('/privacy', (req, res) => {
   res.render('privacy');
-  //res.send(200, 'Welcome to Mitman Bot service. Contact our bot at https://www.facebook.com/Mitman-Bot-128096021205913/');
+});
+app.get('/terms', (req, res) => {
+  res.render('terms');
 });
 
 app.listen(app.get('port'), () => {

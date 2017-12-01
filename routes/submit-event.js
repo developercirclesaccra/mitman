@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     msg: 'Event data received',
   });
   let eventJSON = req.body.eventJSON;
-
+  console.log('*Meetup json received: ', eventJSON, typeof eventJSON);
   let senderId = eventJSON.fbId;
 
   let getUserArgs = {
@@ -23,10 +23,9 @@ router.post('/', (req, res) => {
   };
   requestCall(getUserArgs, (err, resp, body) => {
     if (err) { throw err };
+    console.log('*User data obtained from backend: ', body, typeof body);
     let userData = JSON.parse(body);
     if (userData.success) {
-      console.log('about to add organizer tojson...');
-      eventJSON.organizer = userData.user._id;
       let addEventArgs = {
         url_String: process.env.BACKEND_URL + 'meetup',
         method_String: 'POST',
@@ -35,13 +34,24 @@ router.post('/', (req, res) => {
           "mitman-token": process.env.MITMAN_TOKEN,
         },
         jsonData_Object: {
-          event: eventJSON,
+          "name": eventJSON.name,
+          "format": eventJSON.format,
+          "date": eventJSON.date,
+          "start_time": eventJSON.start_time,
+          "end_time": eventJSON.end_time,
+          "feedback_time": eventJSON.feedback_time,
+          "venue": eventJSON.venue,
+          "description": eventJSON.description,
+          "agenda": eventJSON.agenda,
+          "is_swag": eventJSON.is_swag,
+          "organizer": userData.user._id
         },
       };
       requestCall(addEventArgs, (err, resp, body) => {
         if (err) { throw err };
+        console.log('*created event: ', body);
         if (body.success) {
-          let eventId = body.event._id;
+          let eventId = body.meetup._id;
           console.log('*created event: ', body);
           let codeArgs = {
             url_String: "https://graph.facebook.com/v2.6/me/messenger_codes",
@@ -80,10 +90,8 @@ router.post('/', (req, res) => {
           })
           return;
         }
-        return console.log('*add event result: ', body)
       })
     }
-    return console.log('*get user from fbid: ', body);
   })
   
 });

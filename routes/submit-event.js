@@ -51,7 +51,6 @@ router.post('/', (req, res) => {
         if (err) { throw err };
         console.log('*created event: ', body);
         if (body.success) {
-          let eventId = body.meetup._id;
           console.log('*created event: ', body);
           let codeArgs = {
             url_String: "https://graph.facebook.com/v2.6/me/messenger_codes",
@@ -65,11 +64,12 @@ router.post('/', (req, res) => {
             jsonData_Object: {
               type: "standard",
               data: {
-                ref: 'organizer_' + senderId + '_event_' + eventId,
+                ref: `organizer_${senderId}_event_${body.meetup._id}`,
               },
               image_size: 1000
             },
           };
+          console.log('*parametric code args: ', codeArgs);
           requestCall(codeArgs, (error, response, body) => {
             if (error) {
               throw error;

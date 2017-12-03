@@ -36,7 +36,7 @@ const handlePostback = event => {
             throw error;
           }
           console.log('***backend add user result: ', body);
-          if (body.success) {
+       
             let welcomeMsg = "Hello " + user.first_name + "! My name is Mitman. I make your developer meetup experience awesome B-).";
             sendApi.sendMessage(senderId, { text: welcomeMsg }, () => {
               let quickreply = [
@@ -57,7 +57,7 @@ const handlePostback = event => {
               };
               sendApi.sendMessage(senderId, quickReplyMessage);
             });
-          }
+          
         })
       });
       break;
@@ -86,7 +86,7 @@ const handlePostback = event => {
             throw error;
           }
           console.log('*backend add user result: ', body);
-          if (body.success) {
+          
             let msgJSON = {
               "text": "I have a simple form for you to fill in some details about your upcoming Meetup",
             };
@@ -109,7 +109,7 @@ const handlePostback = event => {
               };
               sendApi.sendMessage(senderId, formButton);
             });
-          }
+          
         });
       });
       break;
@@ -228,7 +228,7 @@ const handleMessage = (event) => {
               throw error;
             }
             console.log('*backend add user result: ', body);
-            if (body.success) {
+           
               sendApi.sendMessage(senderId, msgJSON, () => {
                 let formButton = {
                   attachment: {
@@ -248,7 +248,7 @@ const handleMessage = (event) => {
                 };
                 sendApi.sendMessage(senderId, formButton);
               });
-            }
+            
           });
         });
         break;

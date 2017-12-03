@@ -1,7 +1,9 @@
 'use strict'
 
 const express = require('express');
-const receiveApi = require('../mitman/receive-api')
+const handleMessage = require('../events/messages');
+const handlePostback = require('../events/postbacks');
+const handleReferral = require('../events/referrals'); 
 
 // Initialise a new router
 const router = express.Router();
@@ -41,12 +43,12 @@ router.post('/', (req, res) => {
     entry.messaging.forEach((messagingEvent) => {
       // We process each type of messaging event
       if (messagingEvent.message) {
-      	receiveApi.handleMessage(messagingEvent);
+      	handleMessage(messagingEvent);
       } else if (messagingEvent.postback) {
-        receiveApi.handlePostback(messagingEvent);
+        handlePostback(messagingEvent);
       } else if (messagingEvent.referral) {
         console.log('Referral webhook triggered...', messagingEvent);
-        receiveApi.handleReferral(messagingEvent);
+        handleReferral(messagingEvent);
       }
     });
   });

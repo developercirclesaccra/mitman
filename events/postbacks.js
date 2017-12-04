@@ -60,6 +60,7 @@ const handlePostback = event => {
         })
       });
       break;
+
     case 'organize_meetup':
       getUserProfile(senderId, (error, response, body) => {
         if (error) {
@@ -116,6 +117,69 @@ const handlePostback = event => {
     case 'attend_meetup':
       dialogs.attendMeetup(senderId);
       break;
+
+    case 'meetup_options':
+      let getUserArgs = {
+        url_String: `${process.env.BACKEND_URL}user/${senderId}`,
+        method_String: 'GET',
+        headers_Object: {
+          "mitman-token": process.env.MITMAN_TOKEN
+        },
+      };
+      requestCall(getUserArgs, (err, response, body) => {
+        console.log('*get user data from backend: ', body, typeof body);
+        let userData = JSON.parse(body).user;
+        let meetups = userData.meetups;
+        let currentMeetup = meetups[meetups.length - 1];
+        console.log('current meetup: ', currentMeetup, typeof currentMeetup);
+
+        let getEventArgs = {
+          url_String: `${process.env.BACKEND_URL}meetup/${currentMeetup}`,
+          method_String: 'GET',
+          headers_Object: {
+            "mitman-token": process.env.MITMAN_TOKEN,
+          },
+        };
+        requestCall(getEventArgs, (err, resp, body) => {
+          if (err) {
+            throw err;
+          };
+          console.log('*Get event result: ', body, typeof body);
+          let meetupData = JSON.parse(body);
+          if (meetupData.success) {
+            let meetup = meetupData.meetup;
+
+            sendApi.sendMessage(senderId, {
+              "text": "What would you like to do?",
+              "quick_replies": [
+                {
+                  "content_type": "text",
+                  "title": "View agenda",
+                  "payload": `viewagenda_${meetup._id}`
+                },
+                {
+                  "content_type": "text",
+                  "title": "Reserve SWAG",
+                  "payload": `reserveswag_${meetup._id}`
+                },
+                {
+                  "content_type": "text",
+                  "title": "Give feedback",
+                  "payload": `givefeedback_${meetup._id}`
+                }
+              ]
+            });
+          }
+        });
+      });
+      break;
+
+    case 'get_report':
+      sendApi.sendMessage(senderId, { text: "Very soon you will be able to generate reports and statistics about your meetup event here. Look out for this button!" });
+
+    default:
+      sendApi.sendMessage(senderId, { text: "This feature is currently being worked on and will be coming soon" });
+      return;
   }
 };
 

@@ -18,6 +18,10 @@ const handleMessage = event => {
     console.log('QR recived');
     let quickReply = message.quick_reply;
     let payload = quickReply.payload;
+    // let subLoad = payload.split('_')[0];
+
+    // if (subLoad == 'viewagenda' || subLoad == 'reserveswag' || subLoad == 'givefeedback') {
+    // }
 
     switch (payload) {
       case 'organize_meetup':
@@ -68,7 +72,6 @@ const handleMessage = event => {
               };
               sendApi.sendMessage(senderId, formButton);
             });
-
           });
         });
         break;
@@ -131,6 +134,14 @@ const handleMessage = event => {
             }
           });
         });
+        break;
+      
+      case 'get_report':
+        sendApi.sendMessage(senderId, { text: "Very soon you will be able to generate reports and statistics about your meetup event here. Look out for this button!" });
+        
+      default:
+        sendApi.sendMessage(senderId, { text: "This feature is currently being worked on and will be coming soon" });
+        return;
     }
   } else if (message.text) {
 

@@ -115,6 +115,7 @@ const handlePostback = event => {
 
     case 'attend_meetup':
       dialogs.attendMeetup(senderId);
+      break;
   }
 };
 

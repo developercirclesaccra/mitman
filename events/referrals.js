@@ -29,48 +29,76 @@ const handleReferral = event => {
     let meetupData = JSON.parse(body);
     if (meetupData.success) {
       let meetup = meetupData.meetup;
-      let meetTime = `${meetup.date} ${meetup.start_time}`;
-      if (moment(meetTime).isBefore()) {
-        let msg = `Your ${meetup.name} meetup was held ${moment(meetTime).fromNow()}. `;
-        sendApi.sendMessage(senderId, { text: msg }, () => {
-          sendApi.sendMessage(senderId, {
-            "text": "Would you like to give feedback?",
-            "quick_replies": [
-              {
-                "content_type": "text",
-                "title": "Give feedback",
-                "payload": `givefeedback_${meetup._id}`
-              }
-            ]
-          });
+      getUserProfile(senderId, (error, response, body) => {
+        if (error) {
+          throw error;
+        };
+        let user = JSON.parse(body);
+        console.log('*User profile: ', user);
+        let saveUserArgs = {
+          url_String: process.env.BACKEND_URL + "user",
+          method_String: 'POST',
+          headers_Object: {
+            "content-type": "application/json",
+            "mitman-token": process.env.MITMAN_TOKEN
+          },
+          jsonData_Object: {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            fb_id: user.id,
+            meetup: meetup._id
+          }
+        };
+        requestCall(saveUserArgs, (error, response, body) => {
+          if (error) {
+            throw error;
+          }
+          console.log('*backend add user result: ', body);
+
+          let meetTime = `${meetup.date} ${meetup.start_time}`;
+          if (moment(meetTime).isBefore()) {
+            let msg = `Your ${meetup.name} meetup was held ${moment(meetTime).fromNow()}. `;
+            sendApi.sendMessage(senderId, { text: msg }, () => {
+              sendApi.sendMessage(senderId, {
+                "text": "Would you like to give feedback?",
+                "quick_replies": [
+                  {
+                    "content_type": "text",
+                    "title": "Give feedback",
+                    "payload": `givefeedback_${meetup._id}`
+                  }
+                ]
+              });
+            });
+            return;
+          } else if (moment(meetTime).isAfter()) {
+            let msg = `Your ${meetup.name} meetup is holding ${moment(meetTime).fromNow()}. `;
+            sendApi.sendMessage(senderId, { text: msg }, () => {
+              sendApi.sendMessage(senderId, {
+                "text": "What would you like to do?",
+                "quick_replies": [
+                  {
+                    "content_type": "text",
+                    "title": "View agenda",
+                    "payload": `viewagenda_${meetup._id}`
+                  },
+                  {
+                    "content_type": "text",
+                    "title": "Reserve SWAG",
+                    "payload": `reserveswag_${meetup._id}`
+                  },
+                  {
+                    "content_type": "text",
+                    "title": "Give feedback",
+                    "payload": `givefeedback_${meetup._id}`
+                  }
+                ]
+              });
+            });
+            return;
+          }
         });
-        return;
-      } else if (moment(meetTime).isAfter()) {
-        let msg = `Your ${meetup.name} meetup is holding ${moment(meetTime).fromNow()}. `;
-        sendApi.sendMessage(senderId, { text: msg }, () => {
-          sendApi.sendMessage(senderId, {
-            "text": "What would you like to do?",
-            "quick_replies": [
-              {
-                "content_type": "text",
-                "title": "View agenda",
-                "payload": `viewagenda_${meetup._id}`
-              },
-              {
-                "content_type": "text",
-                "title": "Reserve SWAG",
-                "payload": `reserveswag_${meetup._id}`
-              },
-              {
-                "content_type": "text",
-                "title": "Give feedback",
-                "payload": `givefeedback_${meetup._id}`
-              }
-            ]
-          });
-        });
-        return;
-      }
+      });
     }
   })
 }

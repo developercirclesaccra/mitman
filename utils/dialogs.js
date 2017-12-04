@@ -15,13 +15,18 @@ module.exports.welcome = senderId => {
         let quickreply = [
           {
             "content_type": "text",
-            "title": "Attend a Meetup",
-            "payload": "attend_meetup",
+            "title": "Meetup options",
+            "payload": "meetup_options",
           },
           {
             "content_type": "text",
             "title": "Organize a Meetup",
             "payload": "organize_meetup",
+          },
+          {
+            "content_type": "text",
+            "title": "Get report",
+            "payload": "get_report",
           }
         ];
         let quickReplyMessage = {

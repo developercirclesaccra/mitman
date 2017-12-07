@@ -1,165 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <style>
-      body {
-        padding: 10px;
-      }
-      .page-header {
-        margin-bottom: 20px;
-      }
-    </style>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+    crossorigin="anonymous">
+  <style>
+    body {
+      padding: 10px;
+    }
 
-  <body>
-    
-    <div class="container">
-      <h3 class="page-header">Please fill in event details here </h3>
-      
-        <div class="form-group">
-          <label for="event-name">Name</label>
-          <input type="text" class="form-control" id="event-name" placeholder="Enter the name/title of your event here">
-        </div>
-        <div class="form-group">
-          <label for="event-format">Format</label>
-          <select class="form-control" id="event-format">
-            <option value="">Choose event format</option>
-            <option value="Tech Talk">Tech Talk</option>
-            <option value="Workshop">Workshop</option>
-            <option value="Hackathon">Hackathon</option>
-            <option value="Viewing Party">Viewing Party</option>
-            <option value="Hybrid">Hybrid</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="event-date">Date</label>
-          <input type="date" class="form-control" id="event-date">
-        </div>
-        <div class="form-group">
-          <label for="event-start-time">Start time</label>
-          <input type="time" class="form-control" id="event-start-time">
-        </div>
-        <div class="form-group">
-          <label for="event-end-time">End time</label>
-          <input type="time" class="form-control" id="event-end-time">
-        </div>
-        <div class="form-group">
-          <label for="event-feedback-time">Feedback time</label>
-          <input type="time" class="form-control" id="event-feedback-time">
-          <small class="form-text text-muted">This is when you want to ask participants for feedback</small>
-        </div>
-        <div class="form-group">
-          <label for="event-venue">Venue</label>
-          <input type="text" class="form-control" id="event-venue" placeholder="Enter the venue/location of your event here">
-        </div>
-        <div class="form-group">
-          <label for="event-description">Description</label>
-          <textarea class="form-control" id="event-description" placeholder="Enter a brief description of the event here" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="event-agenda">Agenda</label>
-          <textarea class="form-control" id="event-agenda" placeholder="Enter the agenda including time, topic and speaker (if applicable)"
-            rows="3"></textarea>
-        </div>
-        <fieldset class="form-group">
-          <label>Will there be SWAG?</label>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="swag-radios" id="swag-yes" value="true"> Yes
-            </label>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="swag-radios" id="swag-no" value="false"> No
-            </label>
-          </div>
-        </fieldset>
-        <button type="submit" class="btn btn-primary" onclick="submitEvent()">Submit</button>
-     
+    .page-header {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h3 class="page-header">Please fill in event details here </h3>
+
+    <div class="form-group">
+      <label for="event-name">Name</label>
+      <input type="text" class="form-control" id="event-name" placeholder="Enter the name/title of your event here">
     </div>
+    <div class="form-group">
+      <label for="event-format">Format</label>
+      <select class="form-control" id="event-format">
+        <option value="">Choose event format</option>
+        <option value="Tech Talk">Tech Talk</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Hackathon">Hackathon</option>
+        <option value="Viewing Party">Viewing Party</option>
+        <option value="Hybrid">Hybrid</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="event-date">Date</label>
+      <input type="date" class="form-control" id="event-date">
+    </div>
+    <div class="form-group">
+      <label for="event-start-time">Start time</label>
+      <input type="time" class="form-control" id="event-start-time">
+    </div>
+    <div class="form-group">
+      <label for="event-end-time">End time</label>
+      <input type="time" class="form-control" id="event-end-time">
+    </div>
+    <div class="form-group">
+      <label for="event-feedback-time">Feedback time</label>
+      <input type="time" class="form-control" id="event-feedback-time">
+      <small class="form-text text-muted">This is when you want to ask participants for feedback</small>
+    </div>
+    <div class="form-group">
+      <label for="event-venue">Venue</label>
+      <input type="text" class="form-control" id="event-venue" placeholder="Enter the venue/location of your event here">
+    </div>
+    <div class="form-group">
+      <label for="event-description">Description</label>
+      <textarea class="form-control" id="event-description" placeholder="Enter a brief description of the event here" rows="3"></textarea>
+    </div>
+    <div id="dynamicInput" class="form-group">
 
-    <!-- jQuery first, then Tether, then Bootstrap JS. -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-      crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-      crossorigin="anonymous"></script>
-    <script>
-      (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) { return; }
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'Messenger'));
+    </div>
+    <button onclick="addInput('dynamicInput')" class="btn btn-primary">Add Agenda</button>
+    <p>
+      <br>
+      <p></p>
+    </p>
+    <fieldset class="form-group">
+      <label>Will there be SWAG?</label>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="swag-radios" id="swag-yes" value="true"> Yes
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="swag-radios" id="swag-no" value="false"> No
+        </label>
+      </div>
+    </fieldset>
+    <button type="submit" class="btn btn-primary" onclick="submitEvent()">Submit</button>
 
-      window.extAsyncInit = function () { }
+  </div>
+
+  <!-- jQuery first, then Tether, then Bootstrap JS. -->
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+    crossorigin="anonymous"></script>
+  <script>
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+
+    window.extAsyncInit = function () {}
 
 
-      function submitEvent() {
-        console.log('Submit button clicked');
-        let eventJSON = {
-          "name": document.getElementById('event-name').value,
-          "description": document.getElementById('event-description').value,
-          "format": document.getElementById('event-format').value,
-          "venue": document.getElementById('event-venue').value,
-          "date": document.getElementById('event-date').value,
-          "start_time": document.getElementById('event-start-time').value,
-          "end_time": document.getElementById('event-end-time').value,
-          "is_swag": document.getElementsByName('swag-radios : checked').value,
-          "feedback_time": document.getElementById('event-feedback-time').value,
-          "agenda": document.getElementById('event-agenda').value,
-        };
+    function submitEvent() {
+      console.log('Submit button clicked');
+      let eventJSON = {
+        "name": document.getElementById('event-name').value,
+        "description": document.getElementById('event-description').value,
+        "format": document.getElementById('event-format').value,
+        "venue": document.getElementById('event-venue').value,
+        "date": document.getElementById('event-date').value,
+        "start_time": document.getElementById('event-start-time').value,
+        "end_time": document.getElementById('event-end-time').value,
+        "is_swag": document.getElementsByName('swag-radios : checked').value,
+        "feedback_time": document.getElementById('event-feedback-time').value,
+        "agenda": document.getElementById('event-agenda').value,
+      };
 
-        console.log('*eventJSON: ', eventJSON);
+      console.log('*eventJSON: ', eventJSON);
 
-        MessengerExtensions.getContext('1892957380733858', thread_context => {
-          let fbId = thread_context.psid;
-          console.log('*psid: ', fbId);
-          eventJSON.fbId = fbId;
+      MessengerExtensions.getContext('1892957380733858', thread_context => {
+        let fbId = thread_context.psid;
+        console.log('*psid: ', fbId);
+        eventJSON.fbId = fbId;
 
-          let eventReq = new Request('/submit-event', {
-            method: 'POST',
-            headers: new Headers({
-              "Content-Type": "application/json"
-            }),
-            body: JSON.stringify({ "eventJSON": eventJSON })
-          });
+        let eventReq = new Request('/submit-event', {
+          method: 'POST',
+          headers: new Headers({
+            "Content-Type": "application/json"
+          }),
+          body: JSON.stringify({
+            "eventJSON": eventJSON
+          })
+        });
 
-          fetch(eventReq)
-            .then(
+        fetch(eventReq)
+          .then(
             response => {
               if (response.status !== 200) {
                 console.log('*Looks like there was a problem. Status Code: ', response.status);
                 return;
               }
               response.json().then(data => {
-                MessengerExtensions.requestCloseBrowser( success =>{
+                MessengerExtensions.requestCloseBrowser(success => {
                   console.log('*Sucess closing browser: ', success);
                 }, error => {
                   console.log('*Error closing browser: ', error)
                 });
               })
             }
-            )
-            .catch(error => {
-              console.log('*Fetch error: ', error);
-            });
-        }, error => {
-          console.log('*Messenger Extension error: ', error);
-        })
+          )
+          .catch(error => {
+            console.log('*Fetch error: ', error);
+          });
+      }, error => {
+        console.log('*Messenger Extension error: ', error);
+      })
+
+    }
+
+    let counter = 0;
+    let limit = 3;
+    let inputId = 0;
+
+    function addInput(divName) {
+      if (counter == limit) {
+        alert(`You have reached the limit of adding ${counter} inputs`);
+      } else {
+        var newdiv = document.createElement('div');
+        newdiv.id = inputId + 1;
+        newdiv.className = 'row';
+        newdiv.innerHTML =
+          `<div class="col-md-3">
+          <label for="event-agenda">Time</label>
+          <input type="text" class="form-control" id="event-venue" placeholder="Enter the duration ">
+        </div>
+        <div class="col-md-3">
+          <label for="event-agenda">Activity</label>
+          <input type="text" class="form-control" id="event-venue" placeholder="Enter the title ">
+        </div>
+        <div class="col-md-3">
+          <label for="event-agenda">Official</label>
+          <input type="text" class="form-control" id="event-venue" placeholder=" name of the Official ">
+
+        </div>
+        <div class="col-md-3">
+          <label for="event-agenda">Remove Agenda</label>
+          <button onclick="removeInput(${inputId + 1});" class="btn btn-danger form-control">Remove Agenda</button>
+        </div>`;
+        document.getElementById(divName).appendChild(newdiv);
+        counter++;
+        inputId++
 
       }
+    }
 
-    </script>
-  </body>
+
+    function removeInput(child) {
+      const input = document.getElementById(child);
+      console.log(input);
+      input.parentNode.removeChild(input);
+      counter--;
+      inputId--;
+    }
+  </script>
+</body>
 
 </html>

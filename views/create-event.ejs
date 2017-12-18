@@ -86,7 +86,7 @@
         </label>
       </div>
     </fieldset>
-    <button type="submit" class="btn btn-primary" onclick="submitEvent()">Submit</button>
+<button type="submit" class="btn btn-primary" onclick="submitEvent();">Submit</button>
 
   </div>
 
@@ -112,8 +112,70 @@
     window.extAsyncInit = function () {}
 
 
+    let counter = 0;
+    let limit = 3;
+    let inputId = 0;
+    let agendas = [];
+
+    function addInput(divName) {
+      if (counter == limit) {
+        alert(`You have reached the limit of adding ${counter} inputs`);
+      } else {
+        var newdiv = document.createElement('div');
+        newdiv.id = inputId + 1;
+        newdiv.className = 'row';
+        newdiv.innerHTML =
+          `<div class="col-md-3">
+          <label for="event-agenda">Time</label>
+          <input type="text" class="form-control" id="${inputId + 1}-time" placeholder="Enter the duration ">
+        </div>
+        <div class="col-md-3">
+          <label for="event-agenda">Activity</label>
+          <input type="text" class="form-control" id="${inputId + 1}-title" placeholder="Enter the title ">
+        </div>
+        <div class="col-md-3">
+          <label for="event-agenda">Official</label>
+          <input type="text" class="form-control" id="${inputId + 1}-name" placeholder=" name of the Official ">
+
+        </div>
+        <div class="col-md-3">
+          <label for="event-agenda">Remove Agenda</label>
+          <button onclick="removeInput(${inputId + 1});" class="btn btn-danger form-control">Remove Agenda</button>
+        </div>`;
+        document.getElementById(divName).appendChild(newdiv);
+        counter++;
+        inputId++
+
+      }
+    }
+
+
+    function removeInput(child) {
+      const input = document.getElementById(child);
+      console.log(input);
+      input.parentNode.removeChild(input);
+      counter--;
+      inputId--;
+    }
+
+    function onSubmit() {
+    for (let index = 1; index < inputId+1; index++) {
+    let time = document.getElementById(`${index}-time`).value;
+    let title = document.getElementById(`${index}-title`).value;
+    let name = document.getElementById(`${index}-name`).value;
+    if(name !== null || name !== undefined || name !== '') {
+      agendas.push({time,title,name});
+    }
+  }
+   return agendas;
+}
+
+
+
     function submitEvent() {
       console.log('Submit button clicked');
+      onSubmit();
+      
       let eventJSON = {
         "name": document.getElementById('event-name').value,
         "description": document.getElementById('event-description').value,
@@ -124,7 +186,7 @@
         "end_time": document.getElementById('event-end-time').value,
         "is_swag": document.getElementsByName('swag-radios : checked').value,
         "feedback_time": document.getElementById('event-feedback-time').value,
-        "agenda": document.getElementById('event-agenda').value,
+        "agenda": agendas,
       };
 
       console.log('*eventJSON: ', eventJSON);
@@ -167,51 +229,6 @@
         console.log('*Messenger Extension error: ', error);
       })
 
-    }
-
-    let counter = 0;
-    let limit = 3;
-    let inputId = 0;
-
-    function addInput(divName) {
-      if (counter == limit) {
-        alert(`You have reached the limit of adding ${counter} inputs`);
-      } else {
-        var newdiv = document.createElement('div');
-        newdiv.id = inputId + 1;
-        newdiv.className = 'row';
-        newdiv.innerHTML =
-          `<div class="col-md-3">
-          <label for="event-agenda">Time</label>
-          <input type="text" class="form-control" id="event-venue" placeholder="Enter the duration ">
-        </div>
-        <div class="col-md-3">
-          <label for="event-agenda">Activity</label>
-          <input type="text" class="form-control" id="event-venue" placeholder="Enter the title ">
-        </div>
-        <div class="col-md-3">
-          <label for="event-agenda">Official</label>
-          <input type="text" class="form-control" id="event-venue" placeholder=" name of the Official ">
-
-        </div>
-        <div class="col-md-3">
-          <label for="event-agenda">Remove Agenda</label>
-          <button onclick="removeInput(${inputId + 1});" class="btn btn-danger form-control">Remove Agenda</button>
-        </div>`;
-        document.getElementById(divName).appendChild(newdiv);
-        counter++;
-        inputId++
-
-      }
-    }
-
-
-    function removeInput(child) {
-      const input = document.getElementById(child);
-      console.log(input);
-      input.parentNode.removeChild(input);
-      counter--;
-      inputId--;
     }
   </script>
 </body>
